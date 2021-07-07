@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.ovs.entities.ElectionOfficer;
 import com.cg.ovs.entities.NominatedCandidate;
+import com.cg.ovs.entities.RegisteredSocietyVoters;
 import com.cg.ovs.exception.ElectionOfficerDetailsNotFoundException;
 import com.cg.ovs.exception.NominatedCandidateNotFoundException;
 import com.cg.ovs.exception.RegisteredVoterNotFoundException;
@@ -79,7 +80,7 @@ public class ElectionOfficerController
 	@ApiOperation("Update an Existing ElectionOfficer details")
 	public void update(@Valid @RequestBody ElectionOfficer electionofficer) {
 		logger.info("Updating a ElectionOfficerDetails!!");
-		eOfficerService.updateElectionOfficer(electionofficer);
+		eOfficerService.updateElectionOfficerDetails(electionofficer);
 	}
 
 	@DeleteMapping("/delete/{id}")
@@ -135,6 +136,13 @@ public class ElectionOfficerController
 		nCServices.deleteNominatedCandidate(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
+	
+	@GetMapping("/viewRS")
+    @ApiOperation("view an Existing RegisteredSocietyVoters details")
+    public List<RegisteredSocietyVoters> viewRegisteredVoterList()
+    {
+        return eOfficerService.viewRegisteredVoterList();
+    }
 
 
 }

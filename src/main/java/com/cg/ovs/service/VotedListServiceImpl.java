@@ -26,24 +26,27 @@ public class VotedListServiceImpl implements VotedListService {
 	private VotedListDao repository;
 	@Autowired
 	private NominatedCandidateRepository ncrepository;
-	
-	
+
 	@Override
 	@Transactional
 	public VotedList castVotedList(int nid, VotedList votedList) throws NominatedCandidateNotFoundException {
-		
-		NominatedCandidate ncand=ncrepository.getByCandidateId(nid);
-		
-		if (!(ncand.getCandidateId()==nid)) {
-			throw new NominatedCandidateNotFoundException();
-		}
-		
-		votedList.setCandidates(ncand);
-		return repository.save(votedList);
 
+		Optional<NominatedCandidate> nc = ncrepository.findByCandidateId(nid);
+		
+		if (nc.isPresent()) {
+			NominatedCandidate ncand = ncrepository.getByCandidateId(nid);
+
+			if (!(ncand.getCandidateId() == nid)) {
+				throw new NominatedCandidateNotFoundException();
+			}
+
+			votedList.setCandidates(ncand);
+			return repository.save(votedList);
+
+		}
+		throw new NominatedCandidateNotFoundException();
 	}
 
-	
 	@Override
 	public VotedList updateVotedListDetails(VotedList votedList) {//
 		return repository.save(votedList);

@@ -31,20 +31,15 @@ public class VotedListServiceImpl implements VotedListService {
 	@Transactional
 	public VotedList castVotedList(int nid, VotedList votedList) throws NominatedCandidateNotFoundException {
 
-		Optional<NominatedCandidate> nc = ncrepository.findByCandidateId(nid);
-		
-		if (nc.isPresent()) {
-			NominatedCandidate ncand = ncrepository.getByCandidateId(nid);
+		NominatedCandidate ncand = ncrepository.getByCandidateId(nid);
 
-			if (!(ncand.getCandidateId() == nid)) {
-				throw new NominatedCandidateNotFoundException();
-			}
-
-			votedList.setCandidates(ncand);
-			return repository.save(votedList);
-
+		if ((ncand == null)) {
+			throw new NominatedCandidateNotFoundException();
 		}
-		throw new NominatedCandidateNotFoundException();
+
+		votedList.setCandidates(ncand);
+
+		return repository.save(votedList);
 	}
 
 	@Override

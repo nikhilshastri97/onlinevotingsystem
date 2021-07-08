@@ -37,6 +37,7 @@ public class VotedListController {
 
 	@PostMapping("/save/{nid}")
 	public void castVotedList(@PathVariable int nid, @Valid @RequestBody VotedList votedList) throws NominatedCandidateNotFoundException{
+		logger.info("Error in nid"+ nid);
 		service.castVotedList(nid, votedList);
 
 	}
